@@ -3,11 +3,11 @@
 % Copyright (c) 2016 Markus Bergholz
 % https://github.com/markuman/fastKNN
 
-function [classified, dist] = KNNsearch(trained, unknown, k, distance)
+function [classified, dist] = KNNsearch(trained, data, k, distance)
     
     % loop the fastKNN for the whole dataset
-    for i = 1:length(unknown(:,1))
-        [_classified, _k, _dist] = fastKNN(trained, unknown(i,:), k, distance);
+    for i = 1:length(data(:,1))
+        [_classified, _k, _dist] = fastKNN(trained, data(i,:), k, distance);
 
         classified(i) = _classified(1);
         dist(i)       = _dist(1);
@@ -19,7 +19,7 @@ function [classified, dist] = KNNsearch(trained, unknown, k, distance)
 
 end % function KNNsearch
 
-function [classified, k, dist, idx] = fastKNN(trained, unknown, k, distance)
+function [classified, k, dist, idx] = fastKNN(trained, data, k, distance)
 
     if (nargin <= 3)
         % Minkowski Distance
@@ -29,8 +29,8 @@ function [classified, k, dist, idx] = fastKNN(trained, unknown, k, distance)
         distance = 2;
     end
 
-    % trained data has one more column as unknown, the class
-    [dist, idx] = getDistance(trained, unknown, distance);
+    % trained data has one more column as data, the class
+    [dist, idx] = getDistance(trained, data, distance);
 
     if (nargin <= 2)
         % determine k value when no one is given
