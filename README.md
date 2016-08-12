@@ -18,7 +18,7 @@ Extract information and perform classification of datalist manually can be an he
 
 ### Git Datalist Compare
 
-Excel datalist are poor in revision control, with this tool an Excel macro combinet with Git give an effective comparison between different releases of a datalist.
+Excel datalist are poor in revision control, with this tool an Excel macro combined with Git give an effective comparison between different releases of a datalist.
 
 ### Specific Purpose Macro
 

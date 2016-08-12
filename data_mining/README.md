@@ -4,7 +4,7 @@
 
 The following set of Macro and Matlab/Octave function allow to mine data and provide a quick automated way to process the classification of data.
 
-Naming and schemas are designed to work for datalist for Industrial Automation projects.
+Naming and schema are designed to work for datalist for Industrial Automation projects.
 
 ## Excel Macro
 
