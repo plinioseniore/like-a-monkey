@@ -2,7 +2,12 @@
 
 ## Introduction
 
-This example show how to classify the below datalist using the KNN algorithm and a metric model.
+This example show how to classify a datalist using the KNN algorithm and a metric model
+
+**Why?**
+>In a digital world where machines can drive a car into a real world traffic road, why should we do a manual classification of relative simple dataset?
+
+There are several approaches to machine learning focused on classification of data, this case is quite special because there is no noise, so we can get perfect match for known class of data. Not known class of data will have a nearest match with a distance (confidence) that will let us interpret the classification done by the machine.
 
 ### The Datalist
 
