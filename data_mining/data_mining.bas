@@ -14,20 +14,28 @@
 ' LoopTypeCount("P-941001", B:C, "AI") returns 1.
 ' *******************************************************************************************************
 '
-Public Function PropertyTypeCount(LoopNumber As String, CellRange As Range, Target As String) As Variant
+Public Function PropertyTypeCount(LoopNumber As String, CellRange As Range, Target As String, Optional ByVal Alphabetical As Integer = 1) As Variant
 
 ' The last row is identified going through the column down to the first empty cell
 ' use instead NumberOfRows = CellRange.Rows.Count if you don't want to rely on empty cells
 NumberOfRows = CellRange.Rows.End(xlDown).Row
 NumberOfColumns = CellRange.Columns.Count
 TargetNo = 0
-
+IsAlphabetical = 0
 
 For i = 1 To NumberOfRows
     If CellRange.Cells(i, 1) = LoopNumber Then   ' Match the LoopNumber in the first column
-         If InStr(CellRange.Cells(i, NumberOfColumns), Target) >= 1 Then
+        
+		' Mark that we have found the LoopNumber, so we can exit at next iteration
+		If Alphabetical = 1 Then                      
+			IsAlphabetical = 1
+		End If
+		
+		If InStr(CellRange.Cells(i, NumberOfColumns), Target) >= 1 Then
             TargetNo = TargetNo + 1
         End If
+    ElseIf IsAlphabetical = 1 Then
+        Exit For                                 ' Once we passed over, we can exit if LoopName is in alphabetical order
     End If
 Next i
 
@@ -118,4 +126,12 @@ Next i
 
 RetrieveTagNumber = Mid(StringValue, i - i_before + 1, i + i_after - 1)
 
+End Function
+
+' *******************************************************************************************************
+' Return if a cell has the strike through formatting set
+' *******************************************************************************************************
+'
+Function Is_Strikethrough(r As Range)
+  Is_Strikethrough = r.Font.Strikethrough
 End Function
