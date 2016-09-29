@@ -22,6 +22,8 @@ end % function KNNsearch
 function [classified, k, dist, idx] = fastKNN(trained, data, k, distance)
 
     if (nargin <= 3)
+        % Cosine Similarity
+        % for p == 0, Cosine Similarity
         % Minkowski Distance
         % for p == 2, Minkowski becomes equal Euclidean
         % for p == 1, Minkowski becomes equal city block metric
@@ -44,7 +46,26 @@ function [classified, k, dist, idx] = fastKNN(trained, data, k, distance)
 end % function fastKNN
 
 function [values, idx] = getDistance(x, y, p)
-    [values, idx] = sort (sum ( abs( (x(:,1:end-1) - y(ones(size(x,1),1), :) ) .^p), 2) .^ (1 / p));
+
+    if(p==0)    % Use Cosine Similarity
+        for i = 1:length(x(:,1))
+            _values(i) = 1-(x(i,1:end-1)*y')/(sqrt(sum(x(i,1:end-1).^2))*sqrt(sum(y.^2)'));
+            _idx(i) = x(i,end);
+        end
+        
+        % Transpose
+        _values=_values';
+        _idx=_idx';
+        matrix = [_values, _idx];
+        
+        % Sort
+        [values, idx] = sort(matrix,1);
+        values=values(:,1);
+        idx=idx(:,1);
+        
+    else        % Use Minkowski Distance
+        [values, idx] = sort (sum ( abs( (x(:,1:end-1) - y(ones(size(x,1),1), :) ) .^p), 2) .^ (1 / p));
+    end
 end
 
 

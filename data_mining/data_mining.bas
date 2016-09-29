@@ -10,31 +10,35 @@
 ' |PV-941001A|P-941001  | AOR |
 ' |PV-941001B|P-941001  | AOR |
 '
-' LoopTypeCount("P-941001", B:C, "AO") returns 2.
-' LoopTypeCount("P-941001", B:C, "AI") returns 1.
+' PropertyTypeCount("P-941001", B:C, "AO") returns 2.
+' PropertyTypeCount("P-941001", B:C, "AI") returns 1.
+'
+' The optional values Alphabetical and StartingRow allow a faster parsing of the data, assuming that data
+' are in alphabetical order and assigning the starting row.
+'
 ' *******************************************************************************************************
 '
-Public Function PropertyTypeCount(LoopNumber As String, CellRange As Range, Target As String, Optional ByVal Alphabetical As Integer = 1) As Variant
+Public Function PropertyTypeCount(LoopNumber As String, CellRange As Range, Target As String, Optional ByVal Alphabetical As Integer = 0, Optional ByVal StartingRow As Integer = 1) As Variant
 
 ' The last row is identified going through the column down to the first empty cell
 ' use instead NumberOfRows = CellRange.Rows.Count if you don't want to rely on empty cells
 NumberOfRows = CellRange.Rows.End(xlDown).Row
 NumberOfColumns = CellRange.Columns.Count
 TargetNo = 0
-IsAlphabetical = 0
+Catched = 0
 
-For i = 1 To NumberOfRows
+For i = StartingRow To NumberOfRows
     If CellRange.Cells(i, 1) = LoopNumber Then   ' Match the LoopNumber in the first column
         
 		' Mark that we have found the LoopNumber, so we can exit at next iteration
 		If Alphabetical = 1 Then                      
-			IsAlphabetical = 1
+			Catched = 1
 		End If
 		
 		If InStr(CellRange.Cells(i, NumberOfColumns), Target) >= 1 Then
             TargetNo = TargetNo + 1
         End If
-    ElseIf IsAlphabetical = 1 Then
+    ElseIf Catched = 1 Then
         Exit For                                 ' Once we passed over, we can exit if LoopName is in alphabetical order
     End If
 Next i
