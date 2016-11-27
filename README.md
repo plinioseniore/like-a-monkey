@@ -24,6 +24,10 @@ Excel datalist are poor in revision control, with this tool an Excel macro combi
 
 Some people have a lot of fun using Excel like a CAD, they drawn instead of build searchable list. Here a collection of Macro to extract data based on specific purposes.
 
+### Access Examples
+
+This is a collection of Microsoft Access database used for specific purposes, like build a Bill of Materials or manage test logs.
+
 ## License
 
 MIT License applies if not otherwise specified. Not all the code in this repository is by my-self, if so, credits are given inside the files.
