@@ -19,12 +19,15 @@ Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
 ' Use this values to match the column with the tagnames, this colum shall be marked
 ' with Red and Green color based on the test state
 
-Colmn = 2       ' Column
-LastRow = 50    ' Number of rows to parse
+Colmn = 12       ' Column
+LastRow = 50   ' Number of rows to parse
 
 ' Build the CSV file
 CellData = vbCrLf + "Tagname, Test, TestState, ColorMark, Date, Tester" + vbCrLf  					' Header
 FilePath = ThisWorkbook.Path + "\" + ThisWorkbook.Name + "_r" + Format(Now(), "yyyymmdd") + ".txt"  ' Filename
+
+' Mark if shall be saved to file
+SaveToFile = FALSE
 
 ' Parse all Tagnames
 For i = 1 To LastRow
@@ -43,18 +46,26 @@ For i = 1 To LastRow
             TestState = "ToDo"
         ElseIf R > G Then
             TestState = "Failed"
+			SaveToFile = TRUE
+			
+			' Build the row
+            CellData = CellData + Cells(i, Colmn) + "," + ThisWorkbook.Name + "," + TestState + "," + Hex(Cells(i, Colmn).Interior.Color) + "," + Format(Now(), "yyyymmdd") + "," + Environ("COMPUTERNAME") + "\" + Environ("USERNAME") + vbCrLf
         ElseIf G > R Then
             TestState = "Passed"
+			SaveToFile = TRUE	
+
+			' Build the row
+            CellData = CellData + Cells(i, Colmn) + "," + ThisWorkbook.Name + "," + TestState + "," + Hex(Cells(i, Colmn).Interior.Color) + "," + Format(Now(), "yyyymmdd") + "," + Environ("COMPUTERNAME") + "\" + Environ("USERNAME") + vbCrLf			
         End If
     
-        ' Build the row
-        CellData = CellData + Cells(i, Colmn) + "," + ThisWorkbook.Name + "," + TestState + "," + Hex(Cells(i, Colmn).Interior.Color) + "," + Format(Now(), "yyyymmdd") + "," + Environ("COMPUTERNAME") + "\" + Environ("USERNAME") + vbCrLf
     End If
 Next i
 
-' Save the file (will overwrite if exist)
-Open FilePath For Output As #1
-Write #1, CellData
-Close #1
+' Save the file (will overwrite if exist) if at least one tag has been marked
+If SaveToFile = TRUE Then
+	Open FilePath For Output As #1
+	Write #1, CellData
+	Close #1
+End If
 
 End Sub
